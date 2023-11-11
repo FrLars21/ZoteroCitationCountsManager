@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Zotero Citation Counts Manager",
+  "version": "2.0",
+  "description": "Enhanced Citation Counts Manager for Zotero 7",
+  "homepage_url": "https://github.com/FrLars21/ZoteroCitationCountsManager",
+  "applications": {
+    "zotero": {
+      "id": "frlars21@github.com",
+      "update_url": "https://www.zotero.org/download/plugins/make-it-red/updates.json",
+      "strict_min_version": "6.999",
+      "strict_max_version": "7.0.*"
+    }
+  }
+}
