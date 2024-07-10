@@ -5,13 +5,12 @@ async function startup({ id, version, rootURI }) {
 
   ZoteroCitationCounts.init({ id, version, rootURI });
   ZoteroCitationCounts.addToAllWindows();
-
   Zotero.PreferencePanes.register({
     pluginID: id,
     label: await ZoteroCitationCounts.l10n.formatValue(
       "citationcounts-preference-pane-label"
     ),
-    image: ZoteroCitationCounts.icon("edit-list-order", false),
+    image: rootURI + 'icons/icon.png',
     src: "preferences.xhtml",
     scripts: ["preferences.js"],
   });
@@ -55,4 +54,12 @@ function shutdown() {
   ZoteroCitationCounts.removeFromAllWindows();
   Zotero.Notifier.unregisterObserver(itemObserver);
   ZoteroCitationCounts = undefined;
+}
+
+function uninstall() {
+
+}
+
+function install() {
+
 }
