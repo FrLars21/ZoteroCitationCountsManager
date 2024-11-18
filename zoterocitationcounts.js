@@ -389,13 +389,13 @@ ZoteroCitationCounts = {
    * Ref: https://www.zotero.org/support/kb/item_types_and_fields#citing_fields_from_extra
    */
   _setCitationCount: function (item, source, count) {
-    const pattern = /^Citations \(${source}\):|^\d+ citations \(${source}\)/i;
+    const pattern = /^Citations: \d+ \(${source}|^Citations \(${source}\):|^\d+ citations \(${source}\)/i;
     const extraFieldLines = (item.getField("extra") || "")
       .split("\n")
       .filter((line) => !pattern.test(line));
 
     const today = new Date().toISOString().split("T")[0];
-    extraFieldLines.unshift(`${count} citations (${source}) [${today}]`);
+    extraFieldLines.unshift(`Citations: ${count} (${source}, ${today})`);
 
     item.setField("extra", extraFieldLines.join("\n"));
     item.saveTx();

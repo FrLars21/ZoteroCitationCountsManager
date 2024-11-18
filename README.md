@@ -31,7 +31,7 @@ Boilerplate for this plugin was based on Zotero's sample plugin for v7 [Make-It-
 - Run Zotero (version 7.x)
 - Go to `Tools -> Add-ons`
 - `Install Add-on From File`
-- Choose the file `zoterocitationcountsmanager-2.0.0.xpi`
+- Choose the file `zoterocitationcountsmanager-2.0.1.xpi`
 - Restart Zotero
 
 ## License
