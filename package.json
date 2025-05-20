@@ -2,9 +2,13 @@
   "name": "zotero-citation-counts-manager",
   "version": "1.0.0",
   "scripts": {
-    "build": "web-ext build --source-dir=. --artifacts-dir=dist --overwrite-dest -n zoterocitationcountsmanager-$(date +%Y%m%d).xpi --ignore-files bin/* node_modules/* package.json package-lock.json README.md LICENSE .git/* .github/* .gitignore dist/*"
+    "build": "web-ext build --source-dir=. --artifacts-dir=dist --overwrite-dest -n zoterocitationcountsmanager-$(date +%Y%m%d).xpi --ignore-files bin/* node_modules/* package.json package-lock.json README.md LICENSE .git/* .github/* .gitignore dist/*",
+    "test:unit": "mocha test/unit/**/*.test.js"
   },
   "devDependencies": {
-    "web-ext": "^6.4.0"
+    "web-ext": "^6.4.0",
+    "mocha": "^10.2.0",
+    "chai": "^4.3.10",
+    "sinon": "^17.0.1"
   }
 }

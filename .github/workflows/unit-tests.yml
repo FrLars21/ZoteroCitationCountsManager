@@ -1,0 +1,30 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [ main ] # Assuming 'main' is the default branch. If not, adjust.
+  pull_request:
+    branches: [ main ] # Assuming 'main' is the default branch. If not, adjust.
+
+jobs:
+  run-unit-tests:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x] # Specify Node.js versions to test on
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 # Use a recent stable version
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4 # Use a recent stable version
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm run test:unit
