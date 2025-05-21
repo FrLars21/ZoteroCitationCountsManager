@@ -527,11 +527,17 @@ ZoteroCitationCounts = {
   ////////////////////////////////////////////
 
   _crossrefUrl: function (id, type) {
-    return `https://api.crossref.org/works/${id}/transform/application/vnd.citationstyles.csl+json`;
+    return `https://api.crossref.org/works/${id}`;
   },
 
-  _crossrefCallback: function (response) {
-    return response["is-referenced-by-count"];
+  _crossrefCallback: async function (response) {
+    const count = response?.message?.["is-referenced-by-count"];
+
+    // small delay to avoid hitting Crossref rate limits when
+    // processing many items at once
+    await new Promise((r) => setTimeout(r, 500));
+
+    return count;
   },
 
   _inspireUrl: function (id, type) {
@@ -549,7 +555,7 @@ ZoteroCitationCounts = {
 
   // The callback can be async if we want.
   _semanticScholarCallback: async function (response) {
-    count = response["citationCount"];
+    const count = response["citationCount"];
 
     // throttle Semantic Scholar so we don't reach limit.
     await new Promise((r) => setTimeout(r, 3000));
