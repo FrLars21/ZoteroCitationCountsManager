@@ -2,7 +2,7 @@
 
 cd ..
 
-version='2.0'
+version='2.1'
 
 rm -f zoterocitationcountsmanager-${version}.xpi
 zip -r zoterocitationcountsmanager-${version}.xpi locale/* manifest.json bootstrap.js preferences.js preferences.xhtml prefs.js zoterocitationcounts.js
