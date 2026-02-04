@@ -31,6 +31,10 @@ citationcounts-preferences-pane-autoretrieve-api =
     .label = { $api }
 citationcounts-preferences-pane-autoretrieve-api-none =
     .label = No
+citationcounts-preferences-pane-missing-doi-title = Missing DOI Search Strategy (Crossref):
+citationcounts-preferences-pane-missing-doi-strategy =
+    .label = Try title-based search (results may be inaccurate)
 
 ## Misc
 citationcounts-internal-error = Internal error
+

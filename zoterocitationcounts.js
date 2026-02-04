@@ -42,7 +42,7 @@ ZoteroCitationCounts = {
         key: "crossref",
         name: "Crossref",
         useDoi: true,
-        useArxiv: false,
+        useArxiv: true,
         methods: {
           urlBuilder: this._crossrefUrl,
           responseCallback: this._crossrefCallback,
@@ -210,6 +210,7 @@ ZoteroCitationCounts = {
       {
         "data-l10n-id": "citationcounts-itemmenu-retrieve-title",
         class: "menu-iconic",
+        image: this.rootURI + "icons/icon.png",
       },
       "zotero-itemmenu"
     );
@@ -306,14 +307,14 @@ ZoteroCitationCounts = {
       await this.l10n.formatValue("citationcounts-progresswindow-headline", {
         api: api.name,
       }),
-      this.icon("toolbar-advanced-search")
+      this.icon("toolbar-advanced-search") // not compatible in zotero 7?
     );
 
     const progressWindowItems = [];
     const itemTitles = items.map((item) => item.getField("title"));
     itemTitles.forEach((title) => {
       progressWindowItems.push(
-        new progressWindow.ItemProgress(this.icon("spinner-16px"), title)
+        new progressWindow.ItemProgress(this.icon("spinner-16px"), title)// not compatible in zotero 7?
       );
     });
 
@@ -364,12 +365,12 @@ ZoteroCitationCounts = {
 
       this._setCitationCount(item, source, count);
 
-      pwItem.setIcon(this.icon("tick"));
+      // pwItem.setIcon(this.icon("tick"));// not compatible in zotero 7?
       pwItem.setProgress(100);
     } catch (error) {
       pwItem.setError();
       new progressWindow.ItemProgress(
-        this.icon("bullet_yellow"),
+        this.icon("bullet_yellow"),// not compatible in zotero 7?
         await this.l10n.formatValue(error.message, { api: api.name }),
         pwItem
       );
@@ -384,12 +385,31 @@ ZoteroCitationCounts = {
     );
   },
 
+
+  /**
+   * Remove citation counts from the Items "extra" field.
+   */
+  _removeCitationCount: function (item) {
+    const pattern = /^(\d+ citations|Citations:)/i;
+    const extra = item.getField("extra");
+    if (!extra) return;
+
+    const lines = extra.split("\n");
+
+    const newLines = lines.filter((line) => !pattern.test(line));
+
+    if (lines.length !== newLines.length) {
+      item.setField("extra", newLines.join("\n"));
+      item.saveTx();
+    }
+  },
+
   /**
    * Insert the retrieve citation count into the Items "extra" field.
    * Ref: https://www.zotero.org/support/kb/item_types_and_fields#citing_fields_from_extra
    */
   _setCitationCount: function (item, source, count) {
-    const pattern = /^Citations \(${source}\):|^\d+ citations \(${source}\)/i;
+    const pattern = /^(\d+ citations|Citations:)/i;
     const extraFieldLines = (item.getField("extra") || "")
       .split("\n")
       .filter((line) => !pattern.test(line));
@@ -466,6 +486,8 @@ ZoteroCitationCounts = {
     let doiField,
       arxivField = false;
 
+    const useTitleFallback = this.getPref("useTitleFallback");
+
     if (useDoi) {
       try {
         doiField = this._getDoi(item);
@@ -477,7 +499,23 @@ ZoteroCitationCounts = {
 
         return [count, `${apiName}/DOI`];
       } catch (error) {
-        errorMessage = error.message;
+        if (apiName == 'Crossref') {
+          if (useTitleFallback) {
+            try {
+              const title = item.getField('title');
+              const count = await this._sendRequest(
+                this._crossrefUrlByTitle(title, "crossref"),
+                this._crossrefCallbackByTitle
+              );
+
+              return [count, `${apiName}/title`];
+            } catch (error) {
+              errorMessage = error.message;
+            }
+          } else {
+            this._removeCitationCount(item);
+          }
+        }
       }
 
       // if arxiv is not used, throw errors picked up along the way now.
@@ -501,7 +539,23 @@ ZoteroCitationCounts = {
 
         return [count, `${apiName}/arXiv`];
       } catch (error) {
-        errorMessage = error.message;
+        if (apiName == 'Crossref') {
+          if (useTitleFallback) {
+            try {
+              const title = item.getField('title');
+              const count = await this._sendRequest(
+                this._crossrefUrlByTitle(title, "crossref"),
+                this._crossrefCallbackByTitle
+              );
+
+              return [count, `${apiName}/title`];
+            } catch (error) {
+              errorMessage = error.message;
+            }
+          } else {
+            this._removeCitationCount(item);
+          }
+        }
       }
 
       // if both no doi and no arxiv id on item
@@ -528,6 +582,14 @@ ZoteroCitationCounts = {
 
   _crossrefUrl: function (id, type) {
     return `https://api.crossref.org/works/${id}/transform/application/vnd.citationstyles.csl+json`;
+  },
+
+  _crossrefUrlByTitle: function (title, type) {
+    return `https://api.crossref.org/works?query.title=${encodeURIComponent(title)}`;
+  },
+
+  _crossrefCallbackByTitle: function (response) {
+    return response['message']['items'][0]["is-referenced-by-count"];
   },
 
   _crossrefCallback: function (response) {

@@ -2,18 +2,35 @@
   <html:link rel="localization" href="citation-counts.ftl" />
 </linkset>
 
-<vbox onload="ZoteroCitationCounts_Prefs.init()">
+<vbox xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+      xmlns:html="http://www.w3.org/1999/xhtml">
+
   <groupbox>
-    <label
-      ><html:h2
-        data-l10n-id="citationcounts-preferences-pane-autoretrieve-title"
-      ></html:h2
-    ></label>
-    <radiogroup
-      id="citationcounts-preference-pane-autoretrieve-radiogroup"
-      preference="extensions.citationcounts.autoretrieve"
-    >
-      <!-- Radiobuttons are dynamically created by the script -->
+    <label>
+      <html:h2 data-l10n-id="citationcounts-preferences-pane-autoretrieve-title"></html:h2>
+    </label>
+
+    <radiogroup id="citationcounts-preference-pane-autoretrieve-radiogroup"
+                preference="extensions.citationcounts.autoretrieve">
+      <radio value="none"
+             data-l10n-id="citationcounts-preferences-pane-autoretrieve-api-none" />
+
+      <radio value="crossref" label="Crossref" />
+
+      <radio value="inspire" label="INSPIRE-HEP" />
+
+      <radio value="semanticscholar" label="Semantic Scholar" />
     </radiogroup>
   </groupbox>
+
+  <groupbox>
+    <label>
+        <html:h2 data-l10n-id="citationcounts-preferences-pane-missing-doi-title"></html:h2>
+    </label>
+
+    <checkbox preference="extensions.citationcounts.useTitleFallback"
+          data-l10n-id="citationcounts-preferences-pane-missing-doi-strategy" />
+  </groupbox>
+
 </vbox>
+

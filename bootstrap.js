@@ -1,19 +1,27 @@
 let ZoteroCitationCounts, itemObserver;
 
-async function startup({ id, version, rootURI }) {
-  Services.scriptloader.loadSubScript(rootURI + "zoterocitationcounts.js");
+var chromeHandle;
 
+async function startup({ id, version, rootURI }) {
+
+  var aomStartup = Cc["@mozilla.org/addons/addon-manager-startup;1"]
+                   .getService(Ci.amIAddonManagerStartup);
+  var manifestURI = Services.io.newURI(rootURI + "manifest.json");
+
+  chromeHandle = aomStartup.registerChrome(manifestURI, [
+      ["content", "citationcounts", "./"],
+  ]);
+
+  Services.scriptloader.loadSubScript(rootURI + "zoterocitationcounts.js");
   ZoteroCitationCounts.init({ id, version, rootURI });
   ZoteroCitationCounts.addToAllWindows();
-
   Zotero.PreferencePanes.register({
     pluginID: id,
     label: await ZoteroCitationCounts.l10n.formatValue(
       "citationcounts-preference-pane-label"
     ),
-    image: ZoteroCitationCounts.icon("edit-list-order", false),
-    src: "preferences.xhtml",
-    scripts: ["preferences.js"],
+    image: rootURI + 'icons/icon.png',
+    src: "preferences.xhtml"
   });
 
   await Zotero.ItemTreeManager.registerColumns({
@@ -22,7 +30,12 @@ async function startup({ id, version, rootURI }) {
       "citationcounts-column-title"
     ),
     pluginID: id,
+    flex: 0,
+    width: "100px",
+    minWidth: 45,
+    staticWidth: true,
     dataProvider: (item) => ZoteroCitationCounts.getCitationCount(item),
+    zoteroPersist: ['width', 'hidden', 'sortDirection'],  // persist the column properties
   });
 
   itemObserver = Zotero.Notifier.registerObserver(
@@ -55,4 +68,18 @@ function shutdown() {
   ZoteroCitationCounts.removeFromAllWindows();
   Zotero.Notifier.unregisterObserver(itemObserver);
   ZoteroCitationCounts = undefined;
+
+  if (chromeHandle) {
+    chromeHandle.destruct();
+    chromeHandle = null;
+  }
 }
+
+function uninstall() {
+
+}
+
+function install() {
+
+}
+

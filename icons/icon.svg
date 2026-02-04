@@ -1,0 +1,10 @@
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- Yellow -->
+  <rect x="12" y="8" width="72" height="18" fill="#ffc72c"/>
+  
+  <!-- Grey -->
+  <polygon points="84,26 40,70 12,70 56,26" fill="#d8d2c4"/>
+
+  <!-- Blue -->
+  <rect x="12" y="70" width="72" height="18" fill="#3eb1c8"/>
+</svg>
