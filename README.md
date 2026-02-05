@@ -1,4 +1,4 @@
-# Zotero 7 Citation Counts Manager Enhaned
+# Zotero 7/8 Citation Counts Manager Enhanced
 
 - [GitHub](https://github.com/FrLars21/ZoteroCitationCountsManager): Source
   code repository
@@ -12,12 +12,12 @@ Please report any bugs, questions, or feature requests in the Github repository.
 - Autoretrieve citation counts when a new item is added to your Zotero library.
 - Retrieve citation counts manually by right-clicking on one or more items in your Zotero library.
 - Works with the following APIs: [Crossref](https://www.crossref.org), [INSPIRE-HEP](https://inspirehep.net) and [Semantic Scholar](https://www.semanticscholar.org).
-- _NEW:_ The plugin is compatible with **Zotero 7** (Zotero 6 is **NOT** supported!).
-- _NEW:_ The plugin registers a custom column ("Citation Counts") in your Zotero library so that items can be **ordered by citation count**.
-- _NEW:_ Improved _citation count retrieval operation_ status reporting, including item-specific error messages for those items where a citation count couldn't be retrieved.
-- _NEW:_ Concurrent citation count retrieval operations is now possible. Especially important for the autoretrieve feature.
-- _NEW:_ Fluent is used for localizing, while the locale file has been simplified and now cover the whole plugin. You are welcome to submit translations as a PR.
-- _NEW:_ The whole codebade has been refactored with a focus on easy maintenance, especially for the supported citation count APIs.
+- The plugin is compatible with **Zotero 7 and Zotero 8** (Zotero 6 is **NOT** supported!).
+- The plugin registers a custom column ("Citation Counts") in your Zotero library so that items can be **ordered by citation count**.
+- Improved _citation count retrieval operation_ status reporting, including item-specific error messages for those items where a citation count couldn't be retrieved.
+- Concurrent citation count retrieval operations is now possible. Especially important for the autoretrieve feature.
+- Fluent is used for localizing, while the locale file has been simplified and now cover the whole plugin. You are welcome to submit translations as a PR.
+- The whole codebase has been refactored with a focus on easy maintenance, especially for the supported citation count APIs.
 
 ## Acknowledgements
 
@@ -28,10 +28,10 @@ Boilerplate for this plugin was based on Zotero's sample plugin for v7 [Make-It-
 
 - Download the add-on (the .xpi file) from the latest release: https://github.com/FrLars21/ZoteroCitationCountsManager/releases
 - To download the .xpi file, right click it and select 'Save link as'
-- Run Zotero (version 7.x)
+- Run Zotero (version 7.x or 8.x)
 - Go to `Tools -> Add-ons`
 - `Install Add-on From File`
-- Choose the file `zoterocitationcountsmanager-2.0.0.xpi`
+- Choose the file `zoterocitationcountsmanager-2.1.0.xpi`
 - Restart Zotero
 
 ## License
